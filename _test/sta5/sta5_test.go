@@ -38,7 +38,7 @@ func TestStation5(t *testing.T) {
 	r := router.NewRouter(todoDB)
 	srv := httptest.NewServer(r)
 	defer srv.Close()
-	req, err := http.NewRequest(http.MethodGet, "http://localhost:8080/healthz", nil)
+	req, err := http.NewRequest(http.MethodGet, srv.URL+"/healthz", nil)
 	if err != nil {
 		t.Error("リクエストの作成に失敗しました。", err)
 		return
