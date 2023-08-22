@@ -68,7 +68,7 @@ func TestStation9(t *testing.T) {
 		name := name
 		tc := tc
 		t.Run(name, func(t *testing.T) {
-			resp, err := http.Post("http://localhost:8080/todos", "application/json",
+			resp, err := http.Post(srv.URL+"/todos", "application/json",
 				bytes.NewBufferString(fmt.Sprintf(`{"subject":"%s","description":"%s"}`, tc.Subject, tc.Description)))
 			if err != nil {
 				t.Error("リクエストの送信に失敗しました。", err)
@@ -113,13 +113,10 @@ func TestStation9(t *testing.T) {
 			}
 
 			now := time.Now().UTC()
-
 			diff := cmp.Diff(got, want, cmpopts.IgnoreMapEntries(func(k string, v interface{}) bool {
 				switch k {
 				case "id":
-					vv, ok := v.(float64)
-					if !ok {
-						fmt.Println(vv)
+					if vv, _ := v.(float64); vv == 0 {
 						t.Errorf("id を数値に変換できません, got = %s", k)
 					}
 					return true
